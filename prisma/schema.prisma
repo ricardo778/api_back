@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  phones    phones[] // Relación 1: un usuario puede tener muchos celulares
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model phones {
+  id          Int      @id @default(autoincrement())
+  brand       String
+  model       String
+  description String
+  price       Float
+  stock       Int
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id]) // Relación con User
+
+  providerId  Int
+  provider    providers @relation(fields: [providerId], references: [id]) // Relación con Provider
+}
+
+model providers {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  phones    phones[] // Relación inversa
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
