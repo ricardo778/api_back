@@ -6,40 +6,59 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
   name      String
-  phones    phones[] // Relación 1: un usuario puede tener muchos celulares
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  phones    phones[]
+  contacts  contacts[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   @@map("users")
 }
 
 model phones {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   brand       String
   model       String
   description String
   price       Float
   stock       Int
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  published   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   userId      Int
-  user        User     @relation(fields: [userId], references: [id]) // Relación con User
+  user        User       @relation(fields: [userId], references: [id])
 
   providerId  Int
-  provider    providers @relation(fields: [providerId], references: [id]) // Relación con Provider
+  provider    providers  @relation(fields: [providerId], references: [id])
 }
 
 model providers {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   name      String
-  phones    phones[] // Relación inversa
+  phones    phones[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model contacts {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  message   String
+  email     String
+
+  user      User     @relation(fields: [email], references: [email])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("contacts")
 }
+
