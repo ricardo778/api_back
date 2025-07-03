@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   findAll() {
     return this.prisma.user.findMany({ include: { phones: true } });
@@ -24,5 +24,9 @@ export class UsersService {
   remove(id: number) {
     return this.prisma.user.delete({ where: { id } });
   }
+  findByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
+
 }
 

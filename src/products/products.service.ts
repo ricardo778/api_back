@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   findAll() {
     return this.prisma.phones.findMany({
@@ -23,10 +23,21 @@ export class ProductsService {
       },
     });
   }
-
   create(data: any) {
-    return this.prisma.phones.create({ data });
+    return this.prisma.phones.create({
+      data: {
+        brand: data.brand,
+        model: data.model,
+        description: data.description,
+        price: Number(data.price),
+        stock: Number(data.stock),
+        published: data.published === true || data.published === 'true',
+        userId: Number(data.userId),
+        providerId: Number(data.providerId),
+      },
+    });
   }
+
 
   update(id: number, data: any) {
     return this.prisma.phones.update({ where: { id }, data });

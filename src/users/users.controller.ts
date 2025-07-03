@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   findAll() {
@@ -15,6 +15,10 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
+  @Get('email/:email')
+  findByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
+  }
   @Post()
   create(@Body() data: any) {
     return this.usersService.create(data);
