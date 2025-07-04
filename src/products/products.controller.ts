@@ -3,7 +3,7 @@ import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Get()
   findAll() {
@@ -14,11 +14,16 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }
-
+  
   @Post()
-  create(@Body() data: any) {
-    return this.productsService.create(data);
+  async create(@Body() data: any) {
+    const nuevo = await this.productsService.create(data);
+    return {
+      message: 'Celular creado exitosamente',
+      data: nuevo
+    };
   }
+
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: any) {

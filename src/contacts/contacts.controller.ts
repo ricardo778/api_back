@@ -3,7 +3,7 @@ import { ContactsService } from './contacts.service';
 
 @Controller('contacts')
 export class ContactsController {
-  constructor(private readonly contactsService: ContactsService) {}
+  constructor(private readonly contactsService: ContactsService) { }
 
   @Get()
   findAll() {
@@ -19,8 +19,9 @@ export class ContactsController {
     return this.contactsService.create(data);
   }
 
-  @Delete('user/:email')
-  removeByEmail(@Param('email') email: string) {
-    return this.contactsService.removeByEmail(email);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.contactsService.remove(Number(id));
   }
+
 }
