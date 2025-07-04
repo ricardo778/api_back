@@ -7,12 +7,21 @@ export class ProductsService {
 
   findAll() {
     return this.prisma.phones.findMany({
-      include: {
-        user: true,
-        provider: true,
+      select: {
+        id: true,
+        brand: true,
+        model: true,
+        description: true,
+        price: true,
+        stock: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        // ❌ NO INCLUYAS createdAt ni updatedAt por ahora
       },
     });
   }
+
 
   findOne(id: number) {
     return this.prisma.phones.findUnique({
@@ -23,6 +32,7 @@ export class ProductsService {
       },
     });
   }
+
   create(data: any) {
     return this.prisma.phones.create({
       data: {
@@ -37,7 +47,6 @@ export class ProductsService {
       },
     });
   }
-
 
   update(id: number, data: any) {
     return this.prisma.phones.update({ where: { id }, data });

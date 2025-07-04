@@ -6,8 +6,11 @@ export class ProvidersService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.providers.findMany({ include: { phones: true } });
-  }
+  console.log('👉 Ejecutando findAll de providers');
+  return this.prisma.providers.findMany({
+    include: { phones: true },
+  });
+}
 
   findOne(id: number) {
     return this.prisma.providers.findUnique({ where: { id }, include: { phones: true } });
